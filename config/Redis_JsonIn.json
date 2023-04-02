@@ -1,0 +1,39 @@
+{
+"UserHeader": {
+  "User": "TRUONGTX7",
+  "SocketChannel": "Data",
+  "MyAction": "SELECT",
+  "TableName": "PARTB_STATIC_ALLCODES",
+  "SpecialMission": "ExportExcel",
+  "AppName":"java",
+  "SpecialMessage": {
+      "FileArray": [
+        {
+          "Pathname": "/data/project/kafkaservice/excel/Files",
+          "Filename": "ExcelExportABC1.xlsx"
+        }
+      ],
+      "ResultTopic": "JavaFileEngineOut001"
+    }
+},
+"Data": {
+  "UserData": {
+    "User": "TRUONGTX7",
+    "SocketChannel": "Data",
+    "MyAction": "SELECT",
+    "TableName": "PARTB_STATIC_ALLCODES",
+    "SpecialMission": "No",
+    "SpecialMessage": {}
+  },
+  "ActionArray": [
+    {
+      "Select": "SELECT cast(a.rowid as varchar2(100)) myrowid,a.* FROM PARTB_STATIC_ALLCODES A ",
+      "Where": "WHERE ( PURPOSE_CODE like '%STATUS001%')",
+      "GroupBy": " ",
+      "Having": " ",
+      "OrderBy": " ",
+      "Paging": " OFFSET 0 ROWS FETCH NEXT 1000 ROWS ONLY "
+    }
+  ]
+}
+}

@@ -1,0 +1,21 @@
+<jedis id="jedisPoolConfig">
+    <redisMode>Standalone</redisMode>
+    <connectionString>localhost:6379</connectionString>
+    <database>msb-redis</database>
+    <communicationTimeOut>10 seconds</communicationTimeOut>
+    <clusterMaxRedirects>5</clusterMaxRedirects>
+    <sentinelMaster></sentinelMaster>
+    <password></password>
+    <poolMaxTotal>16</poolMaxTotal>
+    <pollMaxIdle>16</pollMaxIdle>
+    <pollMinIdle>0</pollMinIdle>
+    <poolBlockWhenExhausted>true</poolBlockWhenExhausted>
+    <poolMaxWaitTime>10 seconds</poolMaxWaitTime>
+    <poolMinEvictableIdleTime>60 seconds</poolMinEvictableIdleTime>
+    <poolTimeBetweenEvictionRuns>30 seconds</poolTimeBetweenEvictionRuns>
+    <poolNumTestsPerEvictionRun>-1</poolNumTestsPerEvictionRun>
+    <poolTestOnCreate>false</poolTestOnCreate>
+    <poolTestOnBorrow>false</poolTestOnBorrow>
+    <poolTestOnReturn>false</poolTestOnReturn>
+    <poolTestWhileIdle>true</poolTestWhileIdle>
+</jedis>
