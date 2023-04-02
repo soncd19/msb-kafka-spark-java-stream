@@ -1,5 +1,6 @@
 package com.msb.stream;
 
+import com.msb.stream.application.SparkLoadPermission;
 import com.msb.stream.application.SparkStreamJsonIn;
 import com.msb.stream.application.SparkSubRedisSendKafka;
 import com.msb.stream.application.SparkSubscribeRedis;
@@ -27,6 +28,9 @@ public class App {
                 break;
             case "process_spark_sub_redis_send_kafka":
                 new SparkSubRedisSendKafka(configPath, redisConfigPath, "SparkSubRedisSendKafka").run();
+                break;
+            case "process_spark_load_permission":
+                new SparkLoadPermission(configPath, redisConfigPath, "SparkLoadPermission").run();
                 break;
         }
 

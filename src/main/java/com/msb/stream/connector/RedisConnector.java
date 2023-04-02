@@ -1,7 +1,11 @@
 package com.msb.stream.connector;
 
 
+import com.msb.stream.redis.api.Deserializer;
 import com.msb.stream.redis.api.DistributedMapCacheClient;
+import com.msb.stream.redis.api.Serializer;
+import com.msb.stream.redis.serializer.CacheValueSerializer;
+import com.msb.stream.redis.serializer.StringSerializer;
 import com.msb.stream.redis.service.RedisDistributedMapCacheClientService;
 import com.msb.stream.utils.StreamingUtils;
 import com.msb.stream.utils.StringConstant;
@@ -14,16 +18,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RedisConnector implements Serializable {
     private DistributedMapCacheClient distributedMapCacheClient = null;
-    private final String topicOut;
+
     private final Document document;
 
-    public RedisConnector(String topicOut, String redisPath) throws ParserConfigurationException,
+    public RedisConnector(String redisPath) throws ParserConfigurationException,
             IOException, SAXException {
-        this.topicOut = topicOut;
         this.document = StreamingUtils.parseDocument(redisPath);
     }
 
@@ -35,7 +39,7 @@ public class RedisConnector implements Serializable {
         distributedMapCacheClient.disable();
     }
 
-    public void xAdd(ConsumerRecord<String, String> record) throws Exception {
+    public void xAdd(String key, ConsumerRecord<String, String> record) throws Exception {
         Map<byte[], byte[]> messageBody = new HashMap<>();
         String value = record.value();
         messageBody.put(StringConstant.JSON_IN.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
@@ -44,10 +48,10 @@ public class RedisConnector implements Serializable {
         if (distributedMapCacheClient == null) {
             distributedMapCacheClient = init();
         }
-        distributedMapCacheClient.xAdd(topicOut.getBytes(StandardCharsets.UTF_8), messageBody);
+        distributedMapCacheClient.xAdd(key.getBytes(StandardCharsets.UTF_8), messageBody);
     }
 
-    public void xAdd(String message, String kafkaTopicOut) throws Exception {
+    public void xAdd(String key, String message, String kafkaTopicOut) throws Exception {
         Map<byte[], byte[]> messageBody = new HashMap<>();
 
         messageBody.put(StringConstant.DATA.getBytes(StandardCharsets.UTF_8),
@@ -59,6 +63,16 @@ public class RedisConnector implements Serializable {
         if (distributedMapCacheClient == null) {
             distributedMapCacheClient = init();
         }
-        distributedMapCacheClient.xAdd(topicOut.getBytes(StandardCharsets.UTF_8), messageBody);
+        distributedMapCacheClient.xAdd(key.getBytes(StandardCharsets.UTF_8), messageBody);
+    }
+
+    public void put(String key, String value, Serializer<String> keySerializer,
+                    Serializer<String> valueSerializer) throws IOException {
+        distributedMapCacheClient.put(key, value, keySerializer, valueSerializer);
+    }
+
+    public List<String> getList(String key, Serializer<String> keySerializer,
+                                Deserializer<String> valueStringDeserializer) throws IOException {
+        return distributedMapCacheClient.getList(key, keySerializer, valueStringDeserializer);
     }
 }

@@ -22,15 +22,15 @@ public class Main {
 
         Document document = StreamingUtils.parseDocument(redisPath);
         Serializer<String> keySerializer = new StringSerializer();
-        Serializer<byte[]> valueSerializer = new CacheValueSerializer();
+        Serializer<String> valueSerializer = new StringSerializer();
         Deserializer<byte[]> valueDeserializer = new CacheValueDeserializer();
         Deserializer<String> valueStringDeserializer = new StringValueDeserializer();
         DistributedMapCacheClient distributedMapCacheClient = new RedisDistributedMapCacheClientService(document);
         String key = "soncdtestnewpool";
         String value1 = "soncd1";
         String value2 = "soncd2";
-        distributedMapCacheClient.put(key, value1.getBytes(StandardCharsets.UTF_8), keySerializer, valueSerializer);
-        distributedMapCacheClient.put(key, value2.getBytes(StandardCharsets.UTF_8), keySerializer, valueSerializer);
+        distributedMapCacheClient.put(key, value1, keySerializer, valueSerializer);
+        distributedMapCacheClient.put(key, value2, keySerializer, valueSerializer);
         //distributedMapCacheClient.set(key, value.getBytes(StandardCharsets.UTF_8), 60L, keySerializer, valueSerializer);
         //byte[] values = distributedMapCacheClient.get(key, keySerializer, valueDeserializer);
 

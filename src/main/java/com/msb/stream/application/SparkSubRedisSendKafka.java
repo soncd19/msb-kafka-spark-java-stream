@@ -52,8 +52,7 @@ public class SparkSubRedisSendKafka extends BaseApplication {
             sparkContext.setLogLevel("INFO");
 
             Broadcast<SparkKafkaProducer> broadcastSparkKafkaProducer = sparkContext.broadcast(
-                    new SparkKafkaProducer(ConfigMap.config.get(ConfigMap.kafkaServer),
-                            ConfigMap.config.get(ConfigMap.kafkaTopicsOut)),
+                    new SparkKafkaProducer(ConfigMap.config.get(ConfigMap.kafkaServer)),
                     BroadcastTag.classTag(SparkKafkaProducer.class));
 
             StreamingContext streamingContext = new StreamingContext(sparkContext,

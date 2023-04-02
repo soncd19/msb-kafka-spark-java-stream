@@ -56,7 +56,7 @@ public class SparkSubscribeRedis extends BaseApplication {
                     BroadcastTag.classTag(ExportService.class));
 
             Broadcast<RedisConnector> broadcastRedisConnector = sparkContext.broadcast(
-                    new RedisConnector(ConfigMap.config.get(ConfigMap.redisTopicOut), redisConfigPath),
+                    new RedisConnector(redisConfigPath),
                     BroadcastTag.classTag(RedisConnector.class));
 
             StreamingContext streamingContext = new StreamingContext(sparkContext,
@@ -108,8 +108,13 @@ public class SparkSubscribeRedis extends BaseApplication {
                                 // String response = broadcastCallProducerV2.getValue().process("DATAMAN.PR_CRUD_HANDLER002",json);
                                 break;
                             case StringConstant.NO:
-                                String responseGetData = broadcastCallProducerV2.getValue().process(StringConstant.PR_OUPUT_SERVICES, json);
-                                broadcastRedisConnector.getValue().xAdd(responseGetData, kafkaTopicOut);
+                                String responseGetData = broadcastCallProducerV2
+                                        .getValue()
+                                        .process(StringConstant.PR_OUPUT_SERVICES, json);
+
+                                broadcastRedisConnector
+                                        .getValue()
+                                        .xAdd(ConfigMap.config.get(ConfigMap.redisTopicOut), responseGetData, kafkaTopicOut);
                                 break;
                         }
 

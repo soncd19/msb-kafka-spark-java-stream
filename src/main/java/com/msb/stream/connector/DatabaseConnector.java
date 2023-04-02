@@ -26,8 +26,8 @@ public class DatabaseConnector implements Serializable {
         config.setJdbcUrl(properties.getProperty("dataSource.uri"));
         config.setUsername(properties.getProperty("dataSource.user"));
         config.setPassword(properties.getProperty("dataSource.password"));
-        config.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        config.setMaximumPoolSize(100);
+        config.setDriverClassName(properties.getProperty("dataSource.driver"));
+        config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("dataSource.pool.size")));
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
